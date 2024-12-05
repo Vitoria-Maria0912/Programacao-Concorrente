@@ -137,6 +137,7 @@ public class ImageMeanFilter {
         String inputFile = args[0];
         try {
             applyMeanFilter(inputFile, "filtered_output.jpg", 7);
+            // passar por toda lista e dar um join aqui 
         } catch (IOException e) {
             System.err.println("Error processing image: " + e.getMessage());
         }
