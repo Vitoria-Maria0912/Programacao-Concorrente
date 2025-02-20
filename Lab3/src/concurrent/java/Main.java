@@ -1,3 +1,5 @@
+import java.util.concurrent.locks.Condition;
+
 public class Main {
     public static void main(String[] args) {
         if (args.length != 5) {
@@ -12,15 +14,27 @@ public class Main {
         int consumingTime = Integer.parseInt(args[4]);
         
         Buffer buffer = new Buffer();
+        private final Condition producerCondition;
+        private final Condition consumerCondition;
+
+        Thread produtor = new Thread(() -> {
+            for (int i = 1; i <= numProducers; i++) { produzir(i, buffer, maxItemsPerProducer, consumingTime); }
+        });      
         
-        for (int i = 1; i <= numProducers; i++) {
-            Producer producer = new Producer(i, buffer, maxItemsPerProducer, producingTime);
-            producer.produce();
-        }
         
-        for (int i = 1; i <= numConsumers; i++) {
-            Consumer consumer = new Consumer(i, buffer, consumingTime);
-            consumer.process();
-        }
+        Thread consumidor = new Thread(() -> {
+            for (int i = 1; i <= numConsumers; i++) { consumir(i, buffer, producingTime);}
+        }); 
+
+    }
+
+    private static void produzir(int id, Buffer buffer, int maxItems, int sleepTime){
+        Producer producer = new Producer(id, buffer, maxItems, sleepTime);
+        producer.produce();
+    }
+
+    private static void consumir(int id, Buffer buffer, int sleepTime){
+        Consumer consumer = new Consumer(id, buffer, sleepTime);
+        consumer.process();
     }
 }
