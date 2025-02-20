@@ -14,8 +14,8 @@ class Consumer {
         this.id = id;
         this.buffer = buffer;
         this.sleepTime = sleepTime;
-        private final Condition producerCondition;
-        private final Condition consumerCondition;
+        this.producerCondition = producerCondition;
+        this.consumerCondition = consumerCondition;
     
     }
 
