@@ -14,8 +14,8 @@ public class Main {
         int consumingTime = Integer.parseInt(args[4]);
         
         Buffer buffer = new Buffer();
-        private final Condition producerCondition;
-        private final Condition consumerCondition;
+        Condition producerCondition;
+        Condition consumerCondition;
 
         Thread produtor = new Thread(() -> {
             for (int i = 1; i <= numProducers; i++) { produzir(i, buffer, maxItemsPerProducer, consumingTime, producerCondition); }
