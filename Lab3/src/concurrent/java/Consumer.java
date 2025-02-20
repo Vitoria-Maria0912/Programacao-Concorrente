@@ -24,7 +24,7 @@ class Consumer {
         try {
             while (true) {
                 while (buffer.size() != 0) {
-                    consumer.wait();
+                    consumerCondition.wait();
                 }
 
                 int item = buffer.remove();

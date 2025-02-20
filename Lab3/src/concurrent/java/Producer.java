@@ -18,8 +18,8 @@ class Producer {
         this.maxItems = maxItems;
         this.sleepTime = sleepTime;
         this.mutex = new ReentrantLock();
-        private final Condition producerCondition;
-        private final Condition consumerCondition;
+        this.producerCondition = producerCondition;
+        this.consumerCondition = consumerCondition;
         }
     
     public void produce() {
