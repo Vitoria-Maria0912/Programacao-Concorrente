@@ -1,9 +1,11 @@
+import java.util.concurrent.locks.Condition;
+
 class Consumer {
     private final Buffer buffer;
     private final int sleepTime;
     private final int id;
     
-    public Consumer(int id, Buffer buffer, int sleepTime) {
+    public Consumer(int id, Buffer buffer, int sleepTime, Condition consumerCondition) {
         this.id = id;
         this.buffer = buffer;
         this.sleepTime = sleepTime;

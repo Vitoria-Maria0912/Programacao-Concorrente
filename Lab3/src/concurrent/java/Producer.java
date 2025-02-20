@@ -8,15 +8,15 @@ class Producer {
     private final int sleepTime;
     private final int id;
     private final Lock mutex;
-    private final Condition producer;
+    Condition producerCondition;
     
-    public Producer(int id, Buffer buffer, int maxItems, int sleepTime) {
+    public Producer(int id, Buffer buffer, int maxItems, int sleepTime, Condition producerCondition) {
         this.id = id;
         this.buffer = buffer;
         this.maxItems = maxItems;
         this.sleepTime = sleepTime;
         this.mutex = new ReentrantLock();
-        this.producer = mutex.newCondition();
+        this.producerCondition = mutex.newCondition();
     }
     
     public void produce() {
@@ -24,7 +24,7 @@ class Producer {
             try {
                 mutex.lock();
                     Thread.sleep(sleepTime);
-                    while (buffer.size() >= 100) { producer.await(); }
+                    while (buffer.size() >= 100) { producerCondition.await(); }
                     int item = (int) (Math.random() * 100);
                     System.out.println("Producer " + id + " produced item " + item);
                     buffer.put(item);
