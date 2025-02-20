@@ -1,24 +1,43 @@
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 class Consumer {
     private final Buffer buffer;
     private final int sleepTime;
     private final int id;
-    
+    private final Lock mutex = new ReentrantLock();
+    private final Condition consumer = mutex.newCondition();
+
     public Consumer(int id, Buffer buffer, int sleepTime) {
         this.id = id;
         this.buffer = buffer;
         this.sleepTime = sleepTime;
     }
-    
+
     public void process() {
-        while (true) {
-            int item = buffer.remove();
-            if (item == -1) break;
-            System.out.println("Consumer " + id + " consumed item " + item);
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+        mutex.lock();
+        try {
+            while (true) {
+                while (buffer.size() != 0) {
+                    consumer.wait();
+                }
+
+                int item = buffer.remove();
+                if (item == -1)
+                    break;
+                System.out.println("Consumer " + id + " consumed item " + item);
+               // produtor.signal(); tem que notificar ao produtor
             }
         }
+
+        // Thread.sleep(sleepTime);
+        catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+
+            mutex.unlock();
+        }
     }
+
 }
