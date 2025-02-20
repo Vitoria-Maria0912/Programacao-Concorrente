@@ -10,12 +10,12 @@ class Consumer {
     private final Condition producerCondition;
     private final Condition consumerCondition;
 
-    public Consumer(int id, Buffer buffer, int sleepTime, Condition producerCondition, Condition consumerCondition) {
+    public Consumer(int id, Buffer buffer, int sleepTime) {
         this.id = id;
         this.buffer = buffer;
         this.sleepTime = sleepTime;
-        this.producerCondition = producerCondition;
-        this.consumerCondition = consumerCondition;
+        this.producerCondition = mutex.newCondition();
+        this.consumerCondition = mutex.newCondition();
     
     }
 
@@ -33,9 +33,9 @@ class Consumer {
                 System.out.println("Consumer " + id + " consumed item " + item);
                 producerCondition.notify();
             }
+            // Thread.sleep(sleepTime);
         }
 
-        // Thread.sleep(sleepTime);
         catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {

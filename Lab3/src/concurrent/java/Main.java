@@ -18,12 +18,12 @@ public class Main {
         Condition consumerCondition;
 
         Thread produtor = new Thread(() -> {
-            for (int i = 1; i <= numProducers; i++) { produzir(i, buffer, maxItemsPerProducer, consumingTime, producerCondition); }
+            for (int i = 1; i <= numProducers; i++) { produzir(i, buffer, maxItemsPerProducer, consumingTime); }
         });      
         
         
         Thread consumidor = new Thread(() -> {
-            for (int i = 1; i <= numConsumers; i++) { consumir(i, buffer, producingTime, consumerCondition);}
+            for (int i = 1; i <= numConsumers; i++) { consumir(i, buffer, producingTime);}
         }); 
 
         produtor.start();
@@ -31,13 +31,13 @@ public class Main {
 
     }
 
-    private static void produzir(int id, Buffer buffer, int maxItems, int sleepTime, Condition producerCondition){
-        Producer producer = new Producer(id, buffer, maxItems, sleepTime, producerCondition);
+    private static void produzir(int id, Buffer buffer, int maxItems, int sleepTime){
+        Producer producer = new Producer(id, buffer, maxItems, sleepTime);
         producer.produce();
     }
 
-    private static void consumir(int id, Buffer buffer, int sleepTime, Condition consumerCondition){
-        Consumer consumer = new Consumer(id, buffer, sleepTime, consumerCondition);
+    private static void consumir(int id, Buffer buffer, int sleepTime){
+        Consumer consumer = new Consumer(id, buffer, sleepTime);
         consumer.process();
     }
 }

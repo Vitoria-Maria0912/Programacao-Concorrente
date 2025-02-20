@@ -12,14 +12,14 @@ class Producer {
     private final Condition consumerCondition;
 
     
-    public Producer(int id, Buffer buffer, int maxItems, int sleepTime, Condition producerCondition, Condition consumerCondition) {
+    public Producer(int id, Buffer buffer, int maxItems, int sleepTime) {
         this.id = id;
         this.buffer = buffer;
         this.maxItems = maxItems;
         this.sleepTime = sleepTime;
         this.mutex = new ReentrantLock();
-        this.producerCondition = producerCondition;
-        this.consumerCondition = consumerCondition;
+        this.producerCondition = mutex.newCondition();
+        this.consumerCondition = mutex.newCondition();
         }
     
     public void produce() {
