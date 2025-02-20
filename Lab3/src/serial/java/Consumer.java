@@ -11,6 +11,10 @@ class Consumer {
         this.sleepTime = sleepTime;
     }
     
+    public Consumer(int id2, Buffer buffer2, int sleepTime2) {
+        //TODO Auto-generated constructor stub
+    }
+
     public void process() {
         while (true) {
             int item = buffer.remove();

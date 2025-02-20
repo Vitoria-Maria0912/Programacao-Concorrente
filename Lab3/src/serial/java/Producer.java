@@ -17,6 +17,10 @@ class Producer {
         //TODO Auto-generated constructor stub
     }
 
+    public Producer(int id2, Buffer buffer2, int maxItems2, int sleepTime2) {
+        //TODO Auto-generated constructor stub
+    }
+
     public void produce() {
         for (int i = 0; i < maxItems; i++) {
             try {
