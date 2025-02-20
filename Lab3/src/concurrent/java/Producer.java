@@ -8,16 +8,19 @@ class Producer {
     private final int sleepTime;
     private final int id;
     private final Lock mutex;
-    Condition producerCondition;
+    private final Condition producerCondition;
+    private final Condition consumerCondition;
+
     
-    public Producer(int id, Buffer buffer, int maxItems, int sleepTime, Condition producerCondition) {
+    public Producer(int id, Buffer buffer, int maxItems, int sleepTime, Condition producerCondition, Condition consumerCondition) {
         this.id = id;
         this.buffer = buffer;
         this.maxItems = maxItems;
         this.sleepTime = sleepTime;
         this.mutex = new ReentrantLock();
-        this.producerCondition = mutex.newCondition();
-    }
+        private final Condition producerCondition;
+        private final Condition consumerCondition;
+        }
     
     public void produce() {
         for (int i = 0; i < maxItems; i++) {
@@ -28,7 +31,7 @@ class Producer {
                     int item = (int) (Math.random() * 100);
                     System.out.println("Producer " + id + " produced item " + item);
                     buffer.put(item);
-                    // consumer.unlock();
+                    consumerCondition.notify();
                 mutex.unlock();
 
             } catch (InterruptedException e) { Thread.currentThread().interrupt(); }

@@ -7,12 +7,16 @@ class Consumer {
     private final int sleepTime;
     private final int id;
     private final Lock mutex = new ReentrantLock();
-    private final Condition consumer = mutex.newCondition();
+    private final Condition producerCondition;
+    private final Condition consumerCondition;
 
-    public Consumer(int id, Buffer buffer, int sleepTime) {
+    public Consumer(int id, Buffer buffer, int sleepTime, Condition producerCondition, Condition consumerCondition) {
         this.id = id;
         this.buffer = buffer;
         this.sleepTime = sleepTime;
+        private final Condition producerCondition;
+        private final Condition consumerCondition;
+    
     }
 
     public void process() {
@@ -27,7 +31,7 @@ class Consumer {
                 if (item == -1)
                     break;
                 System.out.println("Consumer " + id + " consumed item " + item);
-               // produtor.signal(); tem que notificar ao produtor
+                producerCondition.notify();
             }
         }
 
