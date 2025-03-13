@@ -66,10 +66,15 @@ public class Sum {
             System.exit(1);
         }
 
+        semaforo = new Semaphore((args.length / 2));
+
+        Thread[] threads = new Thread[args.length];
+
 	//many exceptions could be thrown here. we don't care
         for (String path : args) {
             long sum = sum(path);
             System.out.println(path + " : " + sum);
         }
+        System.out.println("Soma total : " + totalSoma);
     }
 }
