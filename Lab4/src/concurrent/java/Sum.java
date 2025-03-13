@@ -84,13 +84,13 @@ public class Sum {
             threads[i].start();
         }
 
+        for(Thread thread: threads){
+            thread.join();
+        }
+        
         for(Long key: maps.keySet()){
             // Map<Long, Set<String>>
             System.out.println("Sum: " + maps.get(key));
-        }
-
-        for(Thread thread: threads){
-            thread.join();
         }
 
         System.out.println("Soma total : " + totalSoma);
