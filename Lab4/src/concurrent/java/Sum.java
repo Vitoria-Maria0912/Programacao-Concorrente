@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.*;
 
 public class Sum {
@@ -10,6 +12,8 @@ public class Sum {
     private static long totalSoma = 0;
 
     private static Semaphore semaforo;
+
+    private static Map<String, Long> maps = new HashMap<>();
 
     public static int sum(FileInputStream fis) throws IOException {
         
@@ -47,7 +51,8 @@ public class Sum {
             try {
                 semaforo.acquire();
                 long sum = sum(this.path);
-                System.out.println(path + " : " + sum); // 
+                System.out.println(path + " : " + sum); 
+                maps.put(path, sum);
 
                 totalSoma += sum;
 
