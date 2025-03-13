@@ -47,6 +47,7 @@ public class Sum {
             try {
                 semaforo.acquire();
                 long sum = sum(this.path);
+                System.out.println(path + " : " + sum); // 
 
                 totalSoma += sum;
 
@@ -70,11 +71,20 @@ public class Sum {
 
         Thread[] threads = new Thread[args.length];
 
-	//many exceptions could be thrown here. we don't care
-        for (String path : args) {
-            long sum = sum(path);
-            System.out.println(path + " : " + sum);
+        for (int i = 0; i < args.length; i++){
+            threads[i] = new Thread (new InnerSum(args[i]));
+            threads[i].start();
         }
+
+        for(Thread thread: threads){
+            thread.join();
+        }
+
+	//many exceptions could be thrown here. we don't care
+        // for (String path : args) {
+        //     long sum = sum(path);
+        //     System.out.println(path + " : " + sum);
+        // }
         System.out.println("Soma total : " + totalSoma);
     }
 }
