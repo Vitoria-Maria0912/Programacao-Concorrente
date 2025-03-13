@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.*;
 
 public class Sum {
@@ -13,7 +14,7 @@ public class Sum {
 
     private static Semaphore semaforo;
 
-    private static Map<String, Long> maps = new HashMap<>();
+    private static Map<Long, Set<String>> maps = new HashMap<>();
 
     public static int sum(FileInputStream fis) throws IOException {
         
@@ -52,7 +53,9 @@ public class Sum {
                 semaforo.acquire();
                 long sum = sum(this.path);
                 System.out.println(path + " : " + sum); 
-                maps.put(path, sum);
+
+                maps.get(sum).add(path);
+                maps.put(sum, maps.get(sum));
 
                 totalSoma += sum;
 
@@ -81,15 +84,15 @@ public class Sum {
             threads[i].start();
         }
 
+        for(Long key: maps.keySet()){
+            // Map<Long, Set<String>>
+            System.out.println("Sum: " + maps.get(key));
+        }
+
         for(Thread thread: threads){
             thread.join();
         }
 
-	//many exceptions could be thrown here. we don't care
-        // for (String path : args) {
-        //     long sum = sum(path);
-        //     System.out.println(path + " : " + sum);
-        // }
         System.out.println("Soma total : " + totalSoma);
     }
 }
