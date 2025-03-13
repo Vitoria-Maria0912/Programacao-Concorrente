@@ -3,8 +3,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.*;
 
 public class Sum {
+
+    private static long totalSoma = 0;
+
+    private static Semaphore semaforo;
 
     public static int sum(FileInputStream fis) throws IOException {
         
@@ -27,6 +32,31 @@ public class Sum {
         } else {
             throw new RuntimeException("Non-regular file: " + path);
         }
+    }
+
+    public static class InnerSum implements Runnable {
+
+        private final String path;
+
+        public InnerSum(String path){
+            this.path = path;
+        }
+
+        @Override
+        public void run() {
+            try {
+                semaforo.acquire();
+                long sum = sum(this.path);
+
+                totalSoma += sum;
+
+            } catch (Exception e) {
+
+            } finally {
+                semaforo.release();
+            }
+        }
+        
     }
 
     public static void main(String[] args) throws Exception {
