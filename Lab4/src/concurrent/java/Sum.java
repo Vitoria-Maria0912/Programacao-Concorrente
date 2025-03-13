@@ -92,7 +92,7 @@ public class Sum {
 
         for(Long key: maps.keySet()){
             // Map<Long, Set<String>>
-            System.out.println("Sum: " + maps.get(key));
+            System.out.println("Sum: " + maps.get(key).toString());
         }
 
     }
