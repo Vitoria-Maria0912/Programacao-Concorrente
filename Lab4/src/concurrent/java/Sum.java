@@ -54,10 +54,10 @@ public class Sum {
                 long sum = sum(this.path);
                 System.out.println(path + " : " + sum); 
 
+                totalSoma += sum;
+                
                 maps.get(sum).add(path);
                 maps.put(sum, maps.get(sum));
-
-                totalSoma += sum;
 
             } catch (Exception e) {
 
@@ -87,12 +87,13 @@ public class Sum {
         for(Thread thread: threads){
             thread.join();
         }
-        
+
+        System.out.println("Soma total : " + totalSoma);
+
         for(Long key: maps.keySet()){
             // Map<Long, Set<String>>
             System.out.println("Sum: " + maps.get(key));
         }
 
-        System.out.println("Soma total : " + totalSoma);
     }
 }
