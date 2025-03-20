@@ -26,7 +26,6 @@ func consumer(ch chan int) {
 
 func main() {
 
-
 	ch := make(chan int)
 
 	go producer(ch)
