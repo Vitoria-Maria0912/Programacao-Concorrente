@@ -1,3 +1,5 @@
+// Matrícula 1: 121210254
+// Matrícula 2: 121210097
 package main
 
 import (
@@ -15,9 +17,10 @@ func producer(ch chan int) {
 	}
 }
 
-func consumer(ch chan int) {
-	for v :=  range ch{
+func consumer(in chan int, out chan int) {
+	for v :=  range in {
 		if(v %2 ==0){
+			out <- v //colocando no canal
 			fmt.Println("Par:", v)
 		}
 	}
@@ -25,13 +28,14 @@ func consumer(ch chan int) {
 }
 
 func main() {
+	n := 20
+	in := make(chan int, n)
+	out := make(chan int, n)
 
-	ch := make(chan int)
+	go producer(in)
+	go producer(in)
 
-	go producer(ch)
-	go producer(ch)
-
-	go consumer(ch)
+	go consumer(in, out)
 
 	time.Sleep(2 * time.Second) // Tempo suficiente para processar os números
 	
