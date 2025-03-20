@@ -8,16 +8,17 @@ import (
 
 func producer(ch chan int) {
 	rand.Seed(42)
-	for i := 0; i < 10000; i++ {
+	n := rand.Intn(1000)
+	for i := 0; i < n; i++ {
 		v := rand.Intn(100)
 		ch <-v //colocando no canal
 	}
-	close(ch)
 }
 
-func consumer(ch chan int) {
-	for v :=  range ch{
+func consumer(in chan int, out chan int) {
+	for v :=  range in {
 		if(v %2 ==0){
+			out <- v //colocando no canal
 			fmt.Println("Par:", v)
 		}
 	}
@@ -25,11 +26,14 @@ func consumer(ch chan int) {
 }
 
 func main() {
+	n := 20
+	in := make(chan int, n)
+	out := make(chan int, n)
 
-	ch := make(chan int)
+	go producer(in)
+	go producer(in)
 
-	go producer(ch)
-	go consumer(ch)
+	go consumer(in, out)
 
 	time.Sleep(2 * time.Second) // Tempo suficiente para processar os números
 	
