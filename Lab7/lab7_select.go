@@ -40,9 +40,11 @@ func main() {
 	sum := 0
 
 	for i := 0; i <= 500; i++ {
-		sum += <- ch1
-		sum += <- ch2
 		
+		select {
+			case x := <- ch1: sum += x
+			case y := <- ch2: sum += y
+		}
 	}
 	fmt.Println("Soma total: ", sum)
 
