@@ -10,7 +10,7 @@ func exec(maxTime int) int {
 
 	tempoDormido := rand.Intn(maxTime)
 
-	time.Sleep(time.Duration(tempoDormido) * time.Second) // time.Milliseconds
+	time.Sleep(time.Duration(tempoDormido) * time.Millisecond) 
 	return tempoDormido
 }
 
@@ -34,10 +34,14 @@ func main() {
 	max_sleep_ms1 := rand.Intn(10)
 	max_sleep_ms2 := rand.Intn(10)
 
+	ch1 := aux(max_sleep_ms1)
+	ch2 := aux(max_sleep_ms2)
+
 	for i := 0; i <= 500; i++ {
-		ch1 := aux(max_sleep_ms1)
-		ch2 := aux(max_sleep_ms2)
-		<- ch1
-		<- ch2
+		
+		select {
+			case <- ch1:
+			case <- ch2:
+		}
 	}
 }
