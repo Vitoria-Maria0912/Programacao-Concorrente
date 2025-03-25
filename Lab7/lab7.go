@@ -1,7 +1,7 @@
 package main
 
 import (
-	// "fmt"
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -37,11 +37,15 @@ func main() {
 	ch1 := aux(max_sleep_ms1)
 	ch2 := aux(max_sleep_ms2)
 
+	sum := 0
+
 	for i := 0; i <= 500; i++ {
 		
 		select {
-			case <- ch1:
-			case <- ch2:
+			case x := <- ch1: sum += x
+			case y := <- ch2: sum += y
 		}
 	}
+	fmt.Println("Soma total: ", sum)
+
 }
