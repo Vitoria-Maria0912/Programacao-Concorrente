@@ -1,30 +1,58 @@
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Etapa1 {
 
-    private BlockingQueue<Integer> queue;
-    private Random random = new Random();
+    private static BlockingQueue<Integer> queue;
+    private static Random random = new Random();
 
-    public Etapa1(int size) {
-        this.queue = new ArrayBlockingQueue<>(size);
+    public Etapa1(Integer size) {
+        queue = new ArrayBlockingQueue<>(size);
     }
     
-    public void producer(int n) {
-        Time sleep = new Time(n);
+    public static void producer(Integer n) {
         
         try {
-            sleep.wait(n); ////////////
-            int nRandom = random.nextInt(10);
+            Thread.sleep(n); 
+            Integer nRandom = random.nextInt(10);
 
-            this.queue.put(nRandom);
+            queue.put(nRandom);
+            System.out.println("Produzindo: "+ nRandom);
         } catch (InterruptedException e) {}
     }
 
-    public void consumer(int n) {
+    public static void consumer(int n) {
 
+        try {
+            Thread.sleep(n); 
+            queue.take();
+            System.out.println("Consumindo... ");
+        } catch (InterruptedException e) {}
+    }
 
+    public static void main(String[] args) {
+        System.out.println("Lab9 ...");    
+
+        Integer nInteger = 10;
+
+        ExecutorService executor = Executors.newFixedThreadPool(nInteger);
+
+        List<Future<?>> futures = new ArrayList<>();
+
+        while (true) {
+            Future<?> future = executor.submit(() -> {
+                producer(nInteger);
+                consumer(nInteger);
+            });
+            futures.add(future);
+        }
     }
 }
