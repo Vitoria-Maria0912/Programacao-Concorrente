@@ -1,0 +1,2 @@
+Quando temos uma maior produção do que menos consumidores , ocorre uma espera por espaço livre na queue . A medida que surge espaço , ocorre o consumo .
+Já quando temos Uma maior número de consumidores temos , uma "espera" para prodermos consumir.
