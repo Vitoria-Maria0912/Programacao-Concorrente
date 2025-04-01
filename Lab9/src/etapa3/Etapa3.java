@@ -1,13 +1,11 @@
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class Etapa3 {
 
@@ -15,7 +13,7 @@ public class Etapa3 {
     private static Random random = new Random();
 
     public Etapa3(Integer size) {
-        queue = new ArrayBlockingQueue<>(size);
+        queue = new PriorityBlockingQueue<>(size);
     }
     
     public static void producer(Integer n) {
@@ -47,14 +45,16 @@ public class Etapa3 {
 
         ExecutorService executor = Executors.newFixedThreadPool(nInteger);
 
-        List<Future<?>> futures = new ArrayList<>();
-
-        while (true) {
-            Future<?> future = executor.submit(() -> {
+        executor.submit(() -> {
+            while (true) {
                 producer(nInteger);
+            }
+        });
+
+        executor.submit(() -> {
+            while (true) {
                 consumer();
-            });
-            futures.add(future);
-        }
+            }
+        });
     }
 }

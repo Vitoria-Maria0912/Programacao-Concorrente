@@ -45,14 +45,16 @@ public class Etapa1 {
 
         ExecutorService executor = Executors.newFixedThreadPool(nInteger);
 
-        List<Future<?>> futures = new ArrayList<>();
-
-        while (true) {
-            Future<?> future = executor.submit(() -> {
+        executor.submit(() -> {
+            while (true) {
                 producer(nInteger);
+            }
+        });
+
+        executor.submit(() -> {
+            while (true) {
                 consumer(nInteger);
-            });
-            futures.add(future);
-        }
+            }
+        });
     }
 }
